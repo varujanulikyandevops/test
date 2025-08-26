@@ -1,12 +1,22 @@
-name: Test
+name: Build and Push Docker Image
 
-on: push
+on:
+  push:
+    branches: [ main ]
 
 jobs:
-    test:
-        name: test for actions
-        runs-on: ubuntu-latest
-        steps:
-          - name: run echo
-            run: echo "test"
-    
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg MY_JSON_SECRET='${{ secrets.MY_JSON_SECRET }}' \
+            -t myapp:latest .
