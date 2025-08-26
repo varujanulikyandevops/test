@@ -20,3 +20,4 @@ jobs:
           docker build \
             --build-arg MY_JSON_SECRET='${{ secrets.MY_JSON_SECRET }}' \
             -t myapp:latest .
+ 
