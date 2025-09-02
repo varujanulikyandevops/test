@@ -1,0 +1,22 @@
+name: Create .env file
+
+on:
+  workflow_dispatch: # allows manual trigger
+
+
+jobs:
+  create-env:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create .env file from secrets
+        run: |
+          echo "API_KEY=${{ secrets.ENV_VARS }}" >> .env
+
+      - name: Upload .env as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: env-file
+          path: .env
