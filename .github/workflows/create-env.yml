@@ -13,10 +13,10 @@ jobs:
 
       - name: Create .env file from secrets
         run: |
-          echo "API_KEY=${{ secrets.DOCKER_USERNAME }}" >> .env
+          echo "${{ secrets.DOCKER_USERNAME }}" >> .env
 
       - name: Build Docker image
         run: |
           docker build \
-            --build-arg SECRET='${{ API_KEY }}' \
+            --build-arg SECRET='${{ .env }}' \
             -t myapp:latest .
