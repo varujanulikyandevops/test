@@ -13,10 +13,10 @@ jobs:
 
       - name: Create .env file from secrets
         run: |
-          echo "API_KEY=${{ secrets.ENV_VARS }}" >> .env
+          echo "API_KEY=${{ secrets.DOCKER_USERNAME }}" >> .env
 
-      - name: Upload .env as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: env-file
-          path: .env
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg SECRET='${{ API_KEY }}' \
+            -t myapp:latest .
